@@ -1,6 +1,6 @@
 # springboot整合log4j2日志工具
 
-## 一、常用日志框架 
+## 一、常用日志框架
 
 JUL、JCL、Jboss-logging、logback、log4j、log4j2、slf4j……
 

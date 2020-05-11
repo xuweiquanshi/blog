@@ -4,7 +4,7 @@
 
 SpringBoot使用一个全局的配置文件 ， 配置文件名称是固定的 
 
-- application.properties 
+- application.properties
   - 语法结构 ：key=value
 - application.yml 或者 application.yaml
   - 语法结构 ：key：空格 value
