@@ -24,14 +24,14 @@ SpringBoot默认选用SLF4j（日志门面）和Logback（日志实现）。
 > 上述介绍的是一些日志框架的实现，这里我们需要用日志门面来解决系统与日志实现框架的耦合性。
 
 * JCL（jakarta commons logging）：Commons Logging 的 目的是为 **"所有的Java日志实现"**提供一个**统一的接口**，它自身也提供一个日志的实现，但是功能非常弱（SimpleLog），所以一般**不会单独使用它**。他允许开发人员使用不同的具体日志实现工具，注意JCL最后一次更新在2014年，**已经过时**。
-* SLF4J（Simple Logging Facade for Java）：简单日志门面，它不是一个真正的日志实现，而是一个抽象层（ abstraction layer），它允许你在后台使用任意一个日志实现。
+* SLF4J（Simple Logging Facade for Java）：简单日志门面，它不是一个真正的日志实现，而是一个抽象层（ abstraction layer），它允许你在后台使用任意一个日志实现，**主流框架**。
 * jboss-logging：是一款类似于slf4j的日志框架，主要用于日志代理，内部采用log4j、log4j2、logback、jdk-logging等框架实现，**很少使用**。
 
 ![img](picture\springboot整合log4j2\35274748.jpg)
 
-​	前面介绍的几种日志框架一样，每一种日志框架都有自己单独的API，要使用对应的框架就要使用其对应的API，这就大大的增加应用程序代码对于日志框架的耦合性。
+前面介绍的几种日志框架一样，每一种日志框架都有自己单独的API，要使用对应的框架就要使用其对应的API，这就大大的增加应用程序代码对于日志框架的耦合性。
 
-​	使用了slf4j后，对于应用程序来说，无论底层的日志框架如何变，应用程序不需要修改任意一行代码，就可以直接上线了。
+​	使用了slf4j等日志门面后，对于应用程序来说，无论底层的日志框架如何变，应用程序不需要修改任意一行代码，就可以直接上线了。
 
 ## 三、为什么选用log4j2
 
@@ -46,7 +46,7 @@ log4j2性能评测：
 - 可以看到在同步日志模式下, Logback的性能是最糟糕的。
 - log4j2的性能无论在同步日志模式还是异步日志模式下都是最佳的。
 
-log4j2优越的性能其原因在于log4j2使用了LMAX,一个无锁的线程间通信库代替了,logback和log4j之前的队列. 并发性能大大提升。
+log4j2优越的性能其原因在于log4j2使用了LMAX,一个无锁的线程间通信库代替了 logback和 log4j之前的队列. 并发性能大大提升。
 
 ## 四、整合步骤
 
@@ -82,15 +82,15 @@ log4j 2.x版本不再支持像1.x中的.properties后缀的文件配置方式，
 
 系统选择配置文件的优先级(从先到后)如下：
 
-​	(1)classpath下的名为log4j2-test.json 或者log4j2-test.jsn的文件.
+​	(1)classpath下的名为 log4j2-test.json 或者 log4j2-test.jsn的文件.
 
-​	(2)classpath下的名为log4j2-test.xml的文件.
+​	(2)classpath下的名为 log4j2-test.xml的文件.
 
-​	(3)classpath下名为log4j2.json 或者log4j2.jsn的文件.
+​	(3)classpath下名为 log4j2.json 或者 log4j2.jsn的文件.
 
-​	(4)classpath下名为log4j2.xml的文件.
+​	(4)classpath下名为 log4j2.xml的文件.
 
-​	我们一般默认使用`log4j2.xml`进行命名。如果本地要测试，可以把log4j2-test.xml放到classpath，而正式环境使用log4j2.xml，则在打包部署的时候不要打包log4j2-test.xml即可。
+​	我们一般默认使用`log4j2.xml`进行命名。如果本地要测试，可以把 log4j2-test.xml放到 classpath，而正式环境使用 log4j2.xml，则在打包部署的时候不要打包 log4j2-test.xml即可。
 
 **如果自定义了文件名或者文件位置，需要在application.yml中配置**
 
@@ -337,10 +337,10 @@ monitorinterval：用于指定log4j自动重新配置的监测间隔时间，单
 
 Root节点用来指定项目的根日志，如果没有单独指定Logger，那么就会默认使用该Root日志输出。
 
-- level:日志输出级别，共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < AppenderRef：Root的子节点，用来指定该日志输出到哪个Appender。
+- level：日志输出级别，共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < AppenderRef：Root的子节点，用来指定该日志输出到哪个Appender。
 - Logger节点：用来单独指定日志的形式，比如要为指定包下的class指定不同的日志级别等。
 - level：日志输出级别，共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < Fatal < OFF。
-- name:用来指定该Logger所适用的类或者类所在的包全路径,继承自Root节点.
+- name：用来指定该Logger所适用的类或者类所在的包全路径,继承自Root节点.
 - AppenderRef：Logger的子节点，用来指定该日志输出到哪个Appender,如果没有指定，就会默认继承自Root.如果指定了，那么会在指定的这个Appender和Root的Appender中都会输出，此时我们可以设置Logger的additivity="false"只在自定义的Appender中进行输出。
 
 ## 简单使用
